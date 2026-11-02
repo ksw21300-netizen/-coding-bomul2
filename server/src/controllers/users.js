@@ -32,7 +32,9 @@ async function findUser(id) {
 }
 
 export async function createUser(req, res) {
-  const user = await User.create(pickWritable(req.body));
+  const data = pickWritable(req.body);
+  delete data.user_type;
+  const user = await User.create(data);
   res.status(201).json(present(user));
 }
 

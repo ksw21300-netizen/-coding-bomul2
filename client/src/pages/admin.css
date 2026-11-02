@@ -53,6 +53,29 @@
   color: #1c2430;
 }
 
+.admin-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.admin-logout {
+  padding: 8px 14px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: #fff;
+  color: #344054;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.admin-logout:hover {
+  border-color: #e11d48;
+  color: #e11d48;
+}
+
 .admin-brand a {
   color: #1f5fae;
   font-size: 66px;

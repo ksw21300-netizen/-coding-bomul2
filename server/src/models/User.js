@@ -20,6 +20,14 @@ const userSchema = new mongoose.Schema(
         },
         '비밀번호는 필수입니다.',
       ],
+      // 저장된 값은 해시이므로, 새로 정하거나 바꾸는 순간에만 규칙을 검사한다.
+      validate: {
+        validator(value) {
+          if (!this.isModified('password')) return true;
+          return value.length >= 8 && /[A-Za-z]/.test(value) && /\d/.test(value);
+        },
+        message: '비밀번호는 8자 이상이고 영문과 숫자를 함께 써야 합니다.',
+      },
       select: false,
     },
     // 가입 시에만 비밀번호와 같은지 확인하고, 컬렉션에는 저장하지 않는다.

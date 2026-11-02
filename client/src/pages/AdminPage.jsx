@@ -149,6 +149,12 @@ function AdminPage() {
 
   if (!allowed) return null;
 
+  function logout() {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    navigate('/', { replace: true });
+  }
+
   const recent = applications.slice(0, 5);
 
   const cards = [
@@ -165,7 +171,12 @@ function AdminPage() {
           <Link to="/">보물 여행</Link>
           <span>ADMIN</span>
         </div>
-        <Link to="/">메인으로 돌아가기</Link>
+        <div className="admin-top-actions">
+          <Link to="/">메인으로 돌아가기</Link>
+          <button className="admin-logout" type="button" onClick={logout}>
+            로그아웃
+          </button>
+        </div>
       </header>
 
       <main className="admin-main">

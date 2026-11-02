@@ -7,7 +7,7 @@ function SiteLayout() {
   const location = useLocation();
   const isSignup = location.pathname === '/signup';
   const isLogin = location.pathname.startsWith('/login');
-  const isLoginPage = location.pathname === '/login';
+  const isLoginPage = location.pathname === '/login' || location.pathname === '/login/find';
   const { theme, toggleTheme } = useBomulTheme();
 
   return (

@@ -12,7 +12,6 @@ function LoginPage() {
   const location = useLocation();
   const [form, setForm] = useState({ user_id: '', password: '', remember: false });
   const [error, setError] = useState(() => location.state?.error ?? '');
-  const [notice, setNotice] = useState('');
   const [pending, setPending] = useState(false);
   const [checking, setChecking] = useState(() => Boolean(storedToken()));
 
@@ -46,15 +45,9 @@ function LoginPage() {
     setForm((current) => ({ ...current, [name]: type === 'checkbox' ? checked : value }));
   }
 
-  function startNaverLogin() {
-    sessionStorage.setItem('naver_remember', form.remember ? '1' : '0');
-    window.location.assign(`${API_BASE}/api/login/naver`);
-  }
-
   async function onSubmit(event) {
     event.preventDefault();
     setError('');
-    setNotice('');
     setPending(true);
     try {
       const response = await fetch(`${API_BASE}/api/login`, {
@@ -85,12 +78,9 @@ function LoginPage() {
     <section className="login-page">
       <form className="login-card" onSubmit={onSubmit}>
         <h1>로그인</h1>
-        <p className="login-lead">카카오로 간편하게 시작하세요</p>
         <p className="login-switch">
           아직 회원이 아니신가요? <Link to="/signup">회원가입</Link>
         </p>
-
-        <div className="login-divider">다른 방법으로 로그인</div>
 
         <div className="login-methods">
           <button type="button" className="method method-id" aria-pressed="true">
@@ -101,10 +91,6 @@ function LoginPage() {
               </svg>
             </span>
             아이디
-          </button>
-          <button type="button" className="method" onClick={startNaverLogin}>
-            <span className="method-icon method-naver" aria-hidden="true">N</span>
-            네이버
           </button>
         </div>
 
@@ -132,7 +118,6 @@ function LoginPage() {
         />
 
         {error ? <p className="form-error" role="alert">{error}</p> : null}
-        {notice ? <p className="login-notice">{notice}</p> : null}
 
         <button className="submit-button login-submit" type="submit" disabled={pending}>
           {pending ? '로그인 중' : '로그인'}
@@ -143,9 +128,9 @@ function LoginPage() {
             <input type="checkbox" name="remember" checked={form.remember} onChange={update} />
             자동로그인
           </label>
-          <button type="button" className="find-button" onClick={() => setNotice('ID/비밀번호 찾기는 준비 중입니다.')}>
+          <Link className="find-button" to="/login/find">
             ID/비밀번호 찾기
-          </button>
+          </Link>
         </div>
       </form>
     </section>

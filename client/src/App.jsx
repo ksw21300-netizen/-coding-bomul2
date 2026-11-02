@@ -4,12 +4,14 @@ import SiteLayout from './components/SiteLayout.jsx';
 import AdminPage from './pages/AdminPage.jsx';
 import ApplicationDetailPage from './pages/ApplicationDetailPage.jsx';
 import ApplyPage from './pages/ApplyPage.jsx';
+import BoardPage from './pages/BoardPage.jsx';
 import CourseListPage from './pages/CourseListPage.jsx';
 import LegendCoursesPage from './pages/LegendCoursesPage.jsx';
 import CourseDetailPage from './pages/CourseDetailPage.jsx';
 import CartPage from './pages/CartPage.jsx';
 import OrderPage from './pages/OrderPage.jsx';
 import CoursesPage from './pages/CoursesPage.jsx';
+import FindAccountPage from './pages/FindAccountPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NaverCallbackPage from './pages/NaverCallbackPage.jsx';
@@ -24,6 +26,7 @@ function App() {
           <Route path="courses" element={<CoursesPage />} />
           <Route path="courses/:id" element={<CourseDetailPage />} />
           <Route path="apply" element={<ApplyPage />} />
+          <Route path="board" element={<BoardPage />} />
           <Route path="cart" element={<CartPage />} />
           <Route path="order" element={<OrderPage />} />
         </Route>
@@ -34,6 +37,7 @@ function App() {
         <Route path="admin/legend-courses" element={<LegendCoursesPage />} />
         <Route element={<SiteLayout />}>
           <Route path="login" element={<LoginPage />} />
+          <Route path="login/find" element={<FindAccountPage />} />
           <Route path="login/naver" element={<NaverCallbackPage />} />
           <Route path="signup" element={<SignupPage />} />
         </Route>

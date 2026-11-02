@@ -347,8 +347,8 @@
   .sec-head p{font-size:1.28rem}
   .intro-big{font-size:clamp(1.72rem,3.7vw,2.45rem)}
   .eyebrow{font-size:1.08rem}
-  .hero h1{font-size:clamp(2.75rem,6.4vw,4.2rem)}
-  .lede{font-size:clamp(1.35rem,2.1vw,1.55rem)}
+  .hero h1{font-size:clamp(2.4rem,4.4vw,3.6rem);word-break:keep-all}
+  .lede{font-size:clamp(1.35rem,2.1vw,1.55rem);word-break:keep-all}
   .media-card .cap h4{font-size:1.32rem}
   .media-card .cap p{font-size:1.15rem}
   .band h2{font-size:clamp(2rem,4vw,2.6rem)}
@@ -393,6 +393,7 @@
       <a data-go="home">홈</a>
       <a data-go="courses">전체 코스</a>
       <a data-go="apply">신청·문의</a>
+      <a href="/board" id="boardLink" hidden>게시판</a>
       <a href="/cart">장바구니 <span id="cartCount"></span></a>
       <a href="/order">주문</a>
       <a href="/login" id="loginLink">로그인</a>
@@ -407,7 +408,7 @@
       <div class="wrap hero-grid">
         <div>
           <div class="eyebrow">보물 여행</div>
-          <h1>역사와 설화를 찾아 떠나는<br><span class="hl">여행</span></h1>
+          <h1>역사와 설화를<br>찾아 떠나는<br><span class="hl">여행</span></h1>
           <p class="lede">전국에 잠든 전설·설화·역사를 코스로 엮어, 이야기를 따라 걷는 새로운 여행을 제안합니다.</p>
           <div class="cta-row">
             <button class="btn btn-primary" data-go="courses">전체 코스</button>
@@ -456,7 +457,7 @@
         <div class="sec-head">
           <div class="sec-kicker">먼저 둘러보기</div>
           <h2>추천 전설 코스</h2>
-          <p>추천 코스는 누구나 볼 수 있습니다. 카드를 누르면 상세 페이지로 이동합니다.</p>
+          <p>추천 코스는 누구나 볼 수 있습니다. 카드를 누르면 상세 페이지로 이동합니다. 전체 코스는 회원가입 후 로그인하면 볼 수 있습니다.</p>
         </div>
         <div class="course-grid" id="featured"></div>
         <div style="margin-top:24px"><button class="btn btn-ghost" data-go="courses">코스 전체 보기</button></div>
@@ -502,7 +503,7 @@
         <div class="sec-head">
           <div class="sec-kicker">전체 코스</div>
           <h2>전설 코스 도전하기</h2>
-          <p>전설 코스 목록은 누구나 볼 수 있습니다. 코스를 누르면 나오는 상세 페이지는 멤버십 회원만 볼 수 있습니다.</p>
+          <p>회원이라면 모든 전설 코스를 무료로 볼 수 있습니다. 코스를 누르면 상세 페이지로 이동합니다.</p>
         </div>
         <div class="filters" id="filters"></div>
         <div class="course-grid" id="allCourses"></div>
@@ -578,13 +579,6 @@
     <a href="/company.html">회사정보</a>
   </nav>
 </footer>
-
-<div id="memberModal" class="ms-modal" hidden>
-  <div class="ms-card" role="dialog" aria-modal="true" aria-labelledby="msTitle">
-    <button class="ms-x" type="button" data-close-member aria-label="닫기">×</button>
-    <div id="memberOffer"></div>
-  </div>
-</div>
 
 <script>
 const API_BASE = "http://localhost:4000";
@@ -2163,8 +2157,16 @@ let signedIn=false;
 let accountReady=false;
 let memberPromptDismissed=false;
 const MEMBERSHIP_PRICE=9900;
+const FREE_MODE=true;
 const FEATURED_IDS=COURSES.slice(0,3).map(c=>c.id);
-function canSeeCourse(c){ return hasMembership || Boolean(c && FEATURED_IDS.includes(c.id)); }
+function canSeeCourse(c){ return signedIn || Boolean(c && FEATURED_IDS.includes(c.id)); }
+function loginRequiredHtml(text){
+  return `<div class="member-box" style="grid-column:1/-1">
+    <h2>회원만 볼 수 있습니다</h2>
+    <p>${text}</p>
+    <div class="member-actions"><a class="btn btn-primary" href="/login">로그인</a><a class="btn btn-ghost" href="/signup">회원가입</a></div>
+  </div>`;
+}
 function won(value){ return Number(value).toLocaleString("ko-KR")+"원"; }
 function courseCard(c){
   return `<article class="ccard" data-course="${c.id}">
@@ -2240,13 +2242,20 @@ function closeMemberModal(){
   memberPromptDismissed=true;
 }
 function maybeAutoMember(){
-  if(!accountReady || hasMembership || memberPromptDismissed) return;
+  if(FREE_MODE || !accountReady || hasMembership || memberPromptDismissed) return;
   const h=(location.hash||"#home").slice(1);
   if(h==="home" || h==="") openMemberModal();
 }
 function renderCourses(){
   const filters=$("#filters");
   const box=$("#allCourses");
+  if(!signedIn){
+    filters.innerHTML="";
+    box.innerHTML=accountReady
+      ? loginRequiredHtml("회원가입 후 로그인하면 전체 전설 코스를 무료로 볼 수 있습니다.")
+      : `<p style="color:var(--muted)">코스를 확인하고 있습니다.</p>`;
+    return;
+  }
   const regions=["전체","서울","경기도","인천","강원도","충청도","경상도","전라","제주","전래","부산","대구","대전","울산","광주","세종"];
   filters.innerHTML=regions.map(r=>`<button class="chip" aria-pressed="${r===activeRegion}" data-region="${r}">${r}</button>`).join("");
   const list=COURSES.filter(c=>activeRegion==="전체"||c.region===activeRegion);
@@ -2264,20 +2273,15 @@ function addrLink(addr){
 function renderDetail(id){
   const c=COURSES.find(x=>x.id===id);
   if(!c){go("courses");return;}
-  if(!accountReady){
+  if(!canSeeCourse(c) && !accountReady){
     $("#courseDetail").innerHTML=`<p class="detail-intro">코스를 확인하고 있습니다.</p>`;
     return;
   }
   if(!canSeeCourse(c)){
     $("#courseDetail").innerHTML=`
-      <div class="detail-head"><span class="badge">${c.region}</span><span class="theme" style="color:var(--muted);font-size:.8rem">멤버십 전용</span></div>
+      <div class="detail-head"><span class="badge">${c.region}</span><span class="theme" style="color:var(--muted);font-size:.8rem">회원 전용</span></div>
       <h1>${c.title}</h1>
-      <div class="member-box">
-        <h2>상세 페이지는 멤버십 회원만 볼 수 있습니다</h2>
-        <p>이 코스의 지도, 이야기, 경유지는 멤버십을 구매한 회원만 볼 수 있습니다.</p>
-        <div class="member-actions"><button class="btn btn-primary" type="button" data-open-member>멤버십 보기</button></div>
-      </div>`;
-    openMemberModal();
+      ${loginRequiredHtml("이 코스의 지도, 이야기, 경유지는 회원가입 후 로그인하면 볼 수 있습니다.")}`;
     return;
   }
   const info = Object.assign({}, c.info, INFOX[c.id]||{});
@@ -2484,6 +2488,7 @@ async function loadAccount(){
   const saved=storedToken();
   const link=$("#loginLink");
   const count=$("#cartCount");
+  const board=$("#boardLink");
   if(!saved){
     accountReady=true;
     refreshCourseViews();
@@ -2497,6 +2502,7 @@ async function loadAccount(){
       hasMembership=user.user_type==="admin" || Boolean(user.membership && user.membership.active);
       link.textContent=user.user_type==="admin"?"관리자":(user.nickname||user.name||"내 정보");
       link.href=user.user_type==="admin"?"/admin":"/cart";
+      if(board) board.hidden=false;
     }
     const cart=await fetch(API_BASE+"/api/carts",{headers:{authorization:`Bearer ${saved}`}});
     if(cart.ok && count){

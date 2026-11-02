@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import applicationsRouter from './routes/applications.js';
+import boardRouter from './routes/board.js';
 import cartsRouter from './routes/carts.js';
 import coursesRouter from './routes/courses.js';
 import legendCoursesRouter from './routes/legendCourses.js';
@@ -50,6 +51,7 @@ app.use('/api/login', authRouter);
 app.use('/api/me', meRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/applications', applicationsRouter);
+app.use('/api/board', boardRouter);
 app.use('/api/courses', coursesRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/api/orders', ordersRouter);

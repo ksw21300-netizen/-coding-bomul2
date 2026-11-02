@@ -157,6 +157,69 @@ a {
   margin-top: 3px;
 }
 
+.policy-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #1f5fae;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.policy-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: rgba(20, 24, 28, 0.45);
+}
+
+.policy-window {
+  display: flex;
+  flex-direction: column;
+  width: min(760px, 100%);
+  height: min(78vh, 820px);
+  overflow: hidden;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+}
+
+.policy-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.policy-bar h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.policy-bar button {
+  padding: 8px 14px;
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  background: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.policy-window iframe {
+  flex: 1;
+  width: 100%;
+  border: 0;
+  background: #fff;
+}
+
 .form-error {
   margin: 14px 0 0;
   color: #b00020;
@@ -264,6 +327,7 @@ a {
   display: flex;
   justify-content: center;
   gap: 28px;
+  margin-top: 22px;
   margin-bottom: 22px;
 }
 
@@ -343,6 +407,61 @@ a {
   color: #777;
   font-size: 13px;
   cursor: pointer;
+}
+
+.find-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 22px;
+  border-bottom: 1px solid #ececec;
+}
+
+.find-tabs button {
+  margin-bottom: -1px;
+  padding: 12px 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #999;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.find-tabs button[aria-pressed="true"] {
+  border-bottom-color: #c4007a;
+  color: #c4007a;
+}
+
+.find-tabs button:focus-visible {
+  outline: 2px solid #222;
+  outline-offset: 2px;
+}
+
+.find-guide {
+  margin: 18px 0 4px;
+  color: #666;
+  font-size: 14px;
+}
+
+.find-result {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 8px;
+  background: #fdf0f7;
+  color: #444;
+  font-size: 15px;
+}
+
+.find-result p {
+  margin: 0;
+}
+
+.find-result a {
+  display: inline-block;
+  margin-top: 10px;
+  color: #c4007a;
+  font-weight: 700;
 }
 
 .login-done p {
